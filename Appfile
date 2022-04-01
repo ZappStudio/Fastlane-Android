@@ -1,2 +1,5 @@
 json_key_file("") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
 package_name("com.template.app") # e.g. com.krausefx.app
+
+#Secrets
+#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
