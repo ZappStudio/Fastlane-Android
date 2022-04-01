@@ -1,6 +1,6 @@
 default_platform(:android)
 config_json = read_json(
-  json_path: "./fastlane/config.json"
+  json_path: "./buildsystem/config.json"
 )
 
 platform :android do
