@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="fastlane.lanes">
+    
+    
+    
+      
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000273901">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: read_json" time="0.003598551">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: Switch to android buildWithJson lane" time="0.000203168">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: app:assembleDevelopRelease" time="233.621628579">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="4: appcenter_upload" time="34.972148781">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>
