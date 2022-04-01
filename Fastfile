@@ -52,11 +52,7 @@ platform :android do
          notify_testers: true
       )
 
-      if teams_web_hook.present? == true
-         print(teams_web_hook)
-         print(appcenter_url_release)
-         print(appcenter_group)
-         print(appcenter_app_name)
+      if teams_web_hook.nil? == false
          teamsNotification(
            teams_web_hook:teams_web_hook,
            teams_message:"Nueva version distribuida en appcenter #{appcenter_app_name} #{appcenter_group} disponible",
