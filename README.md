@@ -37,7 +37,23 @@ Build flavor with json config
 [bundle exec] fastlane android teamsNotification
 ```
 
-Teams information
+Teams message to teams_web_hook
+
+### android uploadGooglePlay
+
+```sh
+[bundle exec] fastlane android uploadGooglePlay
+```
+
+Upload aab to google play
+
+### android buildAab
+
+```sh
+[bundle exec] fastlane android buildAab
+```
+
+Generate specific flavor to build, by security can't make all flavors, because some of them are pointing to develop
 
 ----
 
