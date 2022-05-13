@@ -38,7 +38,7 @@ platform :android do
     appcenter_url_release = options[:appcenter_url_release]
     teams_web_hook = options[:teams_web_hook]
 
-    gradle(task: "app:assemble",flavor: flavor_name.capitalize(),build_type: sign_conf.capitalize())
+    gradle(task: "app:assemble",flavor: flavor_name.then { |s| s[0].upcase + s[1..-1] },build_type: sign_conf.capitalize())
 
     appcenter_upload(
          api_token: appcenter_api_key,
