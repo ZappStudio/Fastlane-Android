@@ -17,7 +17,7 @@ platform :android do
           end
        else
            flavors.each do |child|
-               if child[:flavor_name] === flavor_parameter
+               if child[:id] === flavor_parameter
                  UI.message "Found flavor to build"
                  buildWithJson(child)
                end
@@ -28,7 +28,6 @@ platform :android do
 
   desc "Build flavor with json config"
   lane :buildWithJson do |options|
-
     flavor_name = options[:flavor_name]
     sign_conf = options[:sign_conf]
     appcenter_api_key = options[:appcenter_api_key]
@@ -37,8 +36,9 @@ platform :android do
     appcenter_group = options[:appcenter_group]
     appcenter_url_release = options[:appcenter_url_release]
     teams_web_hook = options[:teams_web_hook]
+    module_name = options[:module_name]
 
-    gradle(task: "app:assemble",flavor: flavor_name.capitalize(),build_type: sign_conf.capitalize())
+    gradle(task: "#{module_name}:assemble",flavor: flavor_name.capitalize(),build_type: sign_conf.capitalize())
 
     appcenter_upload(
          api_token: appcenter_api_key,
@@ -110,7 +110,7 @@ platform :android do
       flavors = config_json[:flavors]
       UI.message "TESTTT"
       flavors.each do |child|
-          if child[:flavor_name] === flavor_parameter
+          if child[:id] === flavor_parameter
             UI.message "Found it specific flavor flavor to build"
             uploadGooglePlay(child)
           end
