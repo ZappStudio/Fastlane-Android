@@ -1,8 +1,12 @@
+
 {
   "flavors": [
     {
-      "id": "developMyCardio",
+      //ID para identificar la build, solo se usa para identificar
+      "id": "develop",
+      //Referencia al flavor ejemplo developManresa
       "flavor_name": "develop",
+      //Configuracion firma normalmente release/develop
       "sign_conf": "release",
       "appcenter_api_key" : "9aecefa71de38e9fb018a372e155601ca98f437b",
       "appcenter_user" : "info-gdiv",
@@ -11,10 +15,11 @@
       "appcenter_url_release": "https://install.appcenter.ms/users/info-gdiv/apps/bodytone-mycardio/distribution_groups/develop",
       "teams_web_hook": "https://zappstudio.webhook.office.com/webhookb2/437ad782-bd54-435f-8e1b-83c07cb42fe8@c9205c9c-40ec-4671-89a6-8d9c3c03d826/IncomingWebhook/61c7cc61ca794fb7b510a310d84f02e1/73c0745e-68bd-4791-8bcb-61621dcca4cc",
       "package_name": "com.bodytone.mycardio",
-      "module_name": "mycardio"
+      //Modulo app que se quiere compilar
+      "module_name": "app"
     },
     {
-      "id": "productionMyCardio",
+      "id": "production",
       "flavor_name": "production",
       "sign_conf": "release",
       "appcenter_api_key" : "9aecefa71de38e9fb018a372e155601ca98f437b",
@@ -24,7 +29,7 @@
       "appcenter_url_release": "https://install.appcenter.ms/users/info-gdiv/apps/bodytone-mycardio/distribution_groups/production",
       "teams_web_hook": "https://zappstudio.webhook.office.com/webhookb2/437ad782-bd54-435f-8e1b-83c07cb42fe8@c9205c9c-40ec-4671-89a6-8d9c3c03d826/IncomingWebhook/61c7cc61ca794fb7b510a310d84f02e1/73c0745e-68bd-4791-8bcb-61621dcca4cc",
       "package_name": "com.bodytone.mycardio",
-      "module_name": "mycardio"
+      "module_name": "app"
     }
   ]
 }

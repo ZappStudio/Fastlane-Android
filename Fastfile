@@ -7,7 +7,7 @@ platform :android do
 
   desc "Building generic by json configuration"
     lane :generic do |values|
-      flavor_parameter  = values[:flavor]
+      flavor_parameter  = values[:id]
       flavors = config_json[:flavors]
 
        if flavor_parameter === "all"
@@ -106,7 +106,7 @@ platform :android do
 
    desc "Generate specific flavor to build, by security can't make all flavors, because some of them are pointing to develop"
     lane :buildAab do |values|
-      flavor_parameter  = values[:flavor]
+      flavor_parameter  = values[:id]
       flavors = config_json[:flavors]
       UI.message "TESTTT"
       flavors.each do |child|
