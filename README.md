@@ -73,7 +73,7 @@ Generate specific flavor to build, by security can't make all flavors, because s
      "directory" : "library/core/src/main/res",
      "format": ".xml",
      "platform" : "android",
-     "key" : "ixjxISxkw_YD0MZIlPDK6g1Miils2JEK",
+     "key" : "api-key",
      "fallback" : "en",
      "order": "id"
    }
