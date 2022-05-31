@@ -5,37 +5,17 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000272352">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000281504">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: read_json" time="0.002961986">
+      <testcase classname="fastlane.lanes" name="1: read_json" time="0.003017551">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: Switch to android buildWithJson lane" time="0.000289494">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="3: mdm:assembleDevelopRelease" time="664.795652993">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="4: appcenter_upload" time="61.129537028">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="5: Switch to android teamsNotification lane" time="0.000297273">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="6: teams_bot" time="2.327849885">
+      <testcase classname="fastlane.lanes" name="2: simple_loco" time="0.627123623">
         
       </testcase>
     

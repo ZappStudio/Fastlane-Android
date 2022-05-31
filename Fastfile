@@ -116,4 +116,36 @@ platform :android do
           end
       end
     end
+
+   desc '
+   La configuracion usada para importar los archivos de Loco a Android debe estar en /buildsystem/localise.json, seguir este formato.
+
+   {
+     "locales" : [
+       "es",
+       "en",
+       "fr"
+     ],
+     "directory" : "library/core/src/main/res",
+     "format": ".xml",
+     "platform" : "android",
+     "key" : "ixjxISxkw_YD0MZIlPDK6g1Miils2JEK",
+     "fallback" : "en",
+     "order": "id"
+   }
+
+   Ademas, para ejecutar esto de forma segura es mejor usar docker, por ejemplo el siguiente comando.
+   Comando docker para ejecutar el script:
+   docker run --rm -v `pwd`:/project mingc/android-build-box bash -c \'cd /project; fastlane importLoco\'
+
+   Tambien es recomendable crearse un Makefile para mas comodidad.
+   Contenido del Makefile:
+
+   import-loco:
+   	docker run --rm -v `pwd`:/project mingc/android-build-box bash -c \'cd /project; fastlane importLoco\'
+
+   '
+     lane :importLoco do |values|
+       simple_loco(conf_file_path: './buildsystem/localise.json')
+     end
 end
