@@ -117,35 +117,58 @@ platform :android do
       end
     end
 
-   desc '
-   La configuracion usada para importar los archivos de Loco a Android debe estar en /buildsystem/localise.json, seguir este formato.
 
-   {
-     "locales" : [
-       "es",
-       "en",
-       "fr"
-     ],
-     "directory" : "library/core/src/main/res",
-     "format": ".xml",
-     "platform" : "android",
-     "key" : "ixjxISxkw_YD0MZIlPDK6g1Miils2JEK",
-     "fallback" : "en",
-     "order": "id"
-   }
+    desc '
+**Configuracion importLoco lane:**
+La configuración usada para importar los archivos de Loco a Android debe estar en /buildsystem/localise.json, seguir este formato.
 
-   Ademas, para ejecutar esto de forma segura es mejor usar docker, por ejemplo el siguiente comando.
-   Comando docker para ejecutar el script:
-   docker run --rm -v `pwd`:/project mingc/android-build-box bash -c \'cd /project; fastlane importLoco\'
+```json
+              {
+               "locales" : [ "es", "en", "fr" ],
+               "directory" : "library/core/src/main/res",
+               "format": ".xml",
+               "platform" : "android",
+               "key" : "ixjxISxkw_YD0MZIlPDK6g1Miils2JEK",
+               "fallback" : "en"
+               }
+```
+**Comando docker para ejecutar el script:**
 
-   Tambien es recomendable crearse un Makefile para mas comodidad.
-   Contenido del Makefile:
+```sh
+    docker run --rm -v `pwd`:/project mingc/android-build-box bash -c \'cd /project; fastlane importLoco\'
+```
 
-   import-loco:
-   	docker run --rm -v `pwd`:/project mingc/android-build-box bash -c \'cd /project; fastlane importLoco\'
+También es recomendable crearse un Makefile para mas comodidad.
+Contenido del Makefile:
 
-   '
+```makefile
+    import-loco:
+    docker run --rm -v `pwd`:/project mingc/android-build-box bash -c \'cd /project; fastlane importLoco\'
+```
+Se puede indicar la configuración que se quiere utilizar, por ejemplo:
+```sh
+   docker run --rm -v `pwd`:/project mingc/android-build-box bash -c \'cd /project; fastlane importLoco conf_file:./buildsystem/localise-mdm.json\'
+```
+
+De esta forma podemos tener varios modulos con diferentes configuraciones de localización. Importándolas todas desde un solo comando. Ejemplo:
+
+```makefile
+    import-loco: import-mycardio import-mdm
+    import-mycardio:
+      docker run --rm -v `pwd`:/project mingc/android-build-box bash -c \'cd /project; fastlane importLoco conf_file:./buildsystem/localise-mycardio.json\'
+
+    import-mdm:
+      docker run --rm -v `pwd`:/project mingc/android-build-box bash -c \'cd /project; fastlane importLoco conf_file:./buildsystem/localise-mdm.json\'
+```
+Esto es extensible infinitamente.
+'
      lane :importLoco do |values|
-       simple_loco(conf_file_path: './buildsystem/localise.json')
+       conf_file  = values[:conf_file]
+
+       if conf_file == nil
+         conf_file = './buildsystem/localise.json'
+       end
+
+       simple_loco(conf_file_path: conf_file)
      end
 end
