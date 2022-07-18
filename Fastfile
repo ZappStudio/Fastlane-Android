@@ -37,20 +37,37 @@ platform :android do
     appcenter_url_release = options[:appcenter_url_release]
     teams_web_hook = options[:teams_web_hook]
     module_name = options[:module_name]
+    upload_server = options[:upload_server]
 
     gradle(task: "#{module_name}:assemble",flavor: flavor_name.then { |s| s[0].upcase + s[1..-1] },build_type: sign_conf.capitalize())
-    
+
+    gradle_path = "#{lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]}"
+
     appcenter_upload(
          api_token: appcenter_api_key,
          owner_name: appcenter_user,
          owner_type: "user", # Default is user - set to organization for appcenter organizations
          destinations: appcenter_group,
          app_name: appcenter_app_name,
-         file: "#{lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]}" ,
+         file: gradle_path,
          app_os: "Android",
          app_display_name: appcenter_app_name,
          notify_testers: true
       )
+
+      if upload_server.nil? == false
+        upload_to_server(
+          endPoint: upload_server[:endpoint],
+          method: :post,
+          multipartPayload: {
+            :fileFormFieldName => "#{upload_server[:param]}"
+          },
+          headers: {
+            :"api_key" => "#{upload_server[:api_key]}"
+          },
+        )
+      end
+
 
       if teams_web_hook.nil? == false
          teamsNotification(
@@ -172,3 +189,4 @@ Esto es extensible infinitamente.
        simple_loco(conf_file_path: conf_file)
      end
 end
+
