@@ -5,42 +5,54 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.001281974">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.001419293">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: read_json" time="0.011461929">
+      <testcase classname="fastlane.lanes" name="1: read_json" time="0.010476612">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: Switch to android buildWithJson lane" time="0.000335068">
+      <testcase classname="fastlane.lanes" name="2: bundleDevelopRelease" time="179.967671343">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: mycardio:assembleProductionRelease" time="51.538067132">
+      <testcase classname="fastlane.lanes" name="3: Switch to android distributeApp lane" time="0.00045328">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: appcenter_upload" time="16.084773482">
+      <testcase classname="fastlane.lanes" name="4: appcenter_upload" time="86.969884271">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="5: upload_to_server" time="2.605402585">
+      <testcase classname="fastlane.lanes" name="5: Switch to android teamsNotification lane" time="0.000296523">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="6: Switch to android teamsNotification lane" time="0.000319154">
+      <testcase classname="fastlane.lanes" name="6: teams_bot" time="2.069048757">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="7: teams_bot" time="1.525178222">
+      <testcase classname="fastlane.lanes" name="7: Switch to android uploadGooglePlay lane" time="0.000497283">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="8: validate_play_store_json_key" time="0.007936284">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="9: upload_to_play_store" time="0.013057445">
+        
+          <failure message="/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/actions/actions_helper.rb:67:in `execute_action'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/runner.rb:255:in `block in execute_action'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/runner.rb:229:in `chdir'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/runner.rb:229:in `execute_action'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/runner.rb:157:in `trigger_action_by_name'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/fast_file.rb:159:in `method_missing'&#10;Fastfile:114:in `block (2 levels) in parsing_binding'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/lane.rb:33:in `call'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/runner.rb:204:in `try_switch_to_lane'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/runner.rb:146:in `trigger_action_by_name'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/fast_file.rb:159:in `method_missing'&#10;Fastfile:142:in `block (3 levels) in parsing_binding'&#10;Fastfile:134:in `each'&#10;Fastfile:134:in `block (2 levels) in parsing_binding'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/lane.rb:33:in `call'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/runner.rb:49:in `block in execute'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/runner.rb:45:in `chdir'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/runner.rb:45:in `execute'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/lane_manager.rb:47:in `cruise_lane'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/command_line_handler.rb:36:in `handle'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/commands_generator.rb:110:in `block (2 levels) in run'&#10;/var/lib/gems/2.7.0/gems/commander-4.6.0/lib/commander/command.rb:187:in `call'&#10;/var/lib/gems/2.7.0/gems/commander-4.6.0/lib/commander/command.rb:157:in `run'&#10;/var/lib/gems/2.7.0/gems/commander-4.6.0/lib/commander/runner.rb:444:in `run_active_command'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:124:in `run!'&#10;/var/lib/gems/2.7.0/gems/commander-4.6.0/lib/commander/delegates.rb:18:in `run!'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/commands_generator.rb:354:in `run'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/commands_generator.rb:43:in `start'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/fastlane/lib/fastlane/cli_tools_distributor.rb:122:in `take_off'&#10;/var/lib/gems/2.7.0/gems/fastlane-2.205.2/bin/fastlane:23:in `&lt;top (required)&gt;'&#10;/usr/local/bin/fastlane:23:in `load'&#10;/usr/local/bin/fastlane:23:in `&lt;main&gt;'&#10;&#10;No authentication parameters were specified. These must be provided in order to authenticate with Google" />
         
       </testcase>
     

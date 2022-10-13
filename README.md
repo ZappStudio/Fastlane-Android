@@ -31,6 +31,14 @@ Building generic by json configuration
 
 Build flavor with json config
 
+### android distributeApp
+
+```sh
+[bundle exec] fastlane android distributeApp
+```
+
+Distribute app
+
 ### android teamsNotification
 
 ```sh

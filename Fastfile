@@ -35,11 +35,12 @@ platform :android do
 
       gradle_path = "#{lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]}"
 
-      distributeApp(options, gradle_path)
+      distributeApp(options: options, gradle_path: gradle_path)
     end
 
   desc "Distribute app"
-    lane :distributeApp do [options, gradle_path]
+    lane :distributeApp do |values|
+      options = values[:options]
       appcenter_api_key = options[:appcenter_api_key]
       appcenter_user = options[:appcenter_user]
       appcenter_app_name = options[:appcenter_app_name]
@@ -48,6 +49,7 @@ platform :android do
       teams_web_hook = options[:teams_web_hook]
       module_name = options[:module_name]
       upload_server = options[:upload_server]
+      gradle_path = values[:gradle_path]
 
       appcenter_upload(
         api_token: appcenter_api_key,
@@ -136,7 +138,7 @@ platform :android do
             sign_conf = child[:sign_conf]
             gradle(task: "bundle", flavor: flavor_name.capitalize(), build_type: sign_conf.capitalize())
             gradle_path = "#{lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]}"
-            distributeApp(child, gradle_path)
+            distributeApp(options: child, gradle_path: gradle_path)
             uploadGooglePlay(child)
           end
       end
