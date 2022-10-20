@@ -30,6 +30,7 @@ platform :android do
     lane :buildWithJson do |options|
       flavor_name = options[:flavor_name]
       sign_conf = options[:sign_conf]
+      module_name = options[:module_name]
 
       gradle(task: "#{module_name}:assemble",flavor: flavor_name.then { |s| s[0].upcase + s[1..-1] },build_type: sign_conf.capitalize())
 
