@@ -118,12 +118,6 @@ platform :android do
         json_key: json_key_file,
         skip_upload_apk:true
        )
-
-       teamsNotification(
-              teams_web_hook:teams_web_hook,
-              teams_message:"Nueva version distribuida a google play alpha disponible",
-              activity_title: "Link [Aquí](https://play.google.com/console/about/)"
-       )
     end
 
 
