@@ -105,19 +105,22 @@ platform :android do
    desc "Upload aab to google play"
     lane :uploadGooglePlay do |options|
        json_key_file = options[:json_key_file]
-       package_name = options[:package_name]
-       teams_web_hook = options[:teams_web_hook]
 
-       validate_play_store_json_key(
-         json_key: json_key_file
-       )
+       if json_key_file == nil
+            package_name = options[:package_name]
+            teams_web_hook = options[:teams_web_hook]
 
-       upload_to_play_store(
-        track: 'alpha',
-        package_name:package_name,
-        json_key: json_key_file,
-        skip_upload_apk:true
-       )
+            validate_play_store_json_key(
+              json_key: json_key_file
+            )
+
+            upload_to_play_store(
+             track: 'alpha',
+             package_name:package_name,
+             json_key: json_key_file,
+             skip_upload_apk:true
+            )
+      end
     end
 
 
@@ -134,6 +137,23 @@ platform :android do
             gradle(task: "bundle", flavor: flavor_name.capitalize(), build_type: sign_conf.capitalize())
             gradle_path = "#{lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]}"
             distributeApp(options: child, gradle_path: gradle_path)
+          end
+      end
+    end
+
+
+   desc "Generate specific flavor to build, by security can't make all flavors, because some of them are pointing to develop"
+    lane :distributeAab do |values|
+      flavor_parameter  = values[:id]
+      flavors = config_json[:flavors]
+      UI.message "TESTTT"
+      flavors.each do |child|
+          if child[:id] === flavor_parameter
+            UI.message "Found it specific flavor flavor to build"
+            flavor_name = child[:flavor_name]
+            sign_conf = child[:sign_conf]
+            gradle(task: "bundle", flavor: flavor_name.capitalize(), build_type: sign_conf.capitalize())
+            gradle_path = "#{lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]}"
             uploadGooglePlay(child)
           end
       end
