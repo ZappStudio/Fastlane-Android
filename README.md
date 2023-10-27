@@ -63,6 +63,14 @@ Upload aab to google play
 
 Generate specific flavor to build, by security can't make all flavors, because some of them are pointing to develop
 
+### android distributeAab
+
+```sh
+[bundle exec] fastlane android distributeAab
+```
+
+Generate specific flavor to build, by security can't make all flavors, because some of them are pointing to develop
+
 ### android importLoco
 
 ```sh
