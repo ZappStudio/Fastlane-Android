@@ -65,16 +65,27 @@ platform :android do
       )
 
       if upload_server.nil? == false
-        upload_to_server(
-          endPoint: upload_server[:endpoint],
-          method: :post,
-          multipartPayload: {
-            :fileFormFieldName => "#{upload_server[:param]}"
-          },
-          headers: {
-            :"api_key" => "#{upload_server[:api_key]}"
-          },
-        )
+        begin
+          params = upload_server[:params]
+          payload = {
+            file: File.new(lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH], 'rb')
+          }
+          payload[:app] = params[:app]
+          payload[:groups] = params[:groups].join(',')        
+
+          upload_to_server(
+            endPoint: upload_server[:endpoint],
+            method: :post,
+            multipartPayload: payload,
+            headers: {
+              "api-key" => "#{upload_server[:apikey]}",
+              "Content-Type" => "multipart/form-data"
+            }
+          )
+        rescue => ex
+          UI.error("Failed to upload to server: #{ex}")
+          raise ex
+        end
       end
 
 
@@ -159,7 +170,6 @@ platform :android do
       end
     end
 
-
     desc '
 **Configuracion importLoco lane:**
 La configuración usada para importar los archivos de Loco a Android debe estar en /buildsystem/localise.json, seguir este formato.
@@ -214,4 +224,3 @@ Esto es extensible infinitamente.
        simple_loco(conf_file_path: conf_file)
      end
 end
-
