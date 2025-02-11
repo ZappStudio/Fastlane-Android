@@ -39,13 +39,13 @@ Build flavor with json config
 
 Distribute app
 
-### android teamsNotification
+### android teams_info
 
 ```sh
-[bundle exec] fastlane android teamsNotification
+[bundle exec] fastlane android teams_info
 ```
 
-Teams message to teams_web_hook
+Inform teams
 
 ### android uploadGooglePlay
 
