@@ -62,15 +62,14 @@ platform :android do
       begin
         params = upload_server[:params]
         groups = params[:groups]
-
+        zappli(
+           api_token: upload_server[:apikey],
+           app: params[:app],
+           path: lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH],
+           groups: groups
+         )
         if teams_web_hook.nil? == false
           UI.message("Proceeding to send teams info, founded webhook #{teams_web_hook} 🚀")
-          zappli(
-            api_token: upload_server[:apikey],
-            app: params[:app],
-            path: lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH],
-            groups: groups
-          )
           teams_info(
             group: groups[0],
             teams_webhook: teams_web_hook,
