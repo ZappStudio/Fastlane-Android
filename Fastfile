@@ -4,7 +4,7 @@ config_json = read_json(
   json_path: "./buildsystem/config.json"
 )
 
-zappcenter_base_url = "https://zappcenter.zapp.dev"
+zappli_api_token = ENV["ZAPPLI_API_KEY"]
 
 platform :android do
   desc "Building generic by json configuration"
@@ -47,23 +47,18 @@ platform :android do
   desc "Distribute app"
   lane :distributeApp do |values|
     options = values[:options]
-    appcenter_api_key = options[:appcenter_api_key]
-    appcenter_user = options[:appcenter_user]
-    appcenter_app_name = options[:appcenter_app_name]
-    appcenter_group = options[:appcenter_group]
-    appcenter_url_release = options[:appcenter_url_release]
     teams_web_hook = options[:teams_web_hook]
     module_name = options[:module_name]
-    upload_server = options[:upload_server]
+    zappli_info = options[:zappli]
     gradle_path = values[:gradle_path]
     flavor_name = options[:flavor_name]
 
-    if upload_server.nil? == false
+    if zappli_info.nil? == false
       begin
-        params = upload_server[:params]
+        params = zappli_info[:params]
         groups = params[:groups]
         zappli(
-           api_token: upload_server[:apikey],
+           api_token: zappli_api_token,
            app: params[:app],
            path: lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH],
            groups: groups
@@ -89,7 +84,6 @@ platform :android do
     group = options[:group]
     teams_webhook = options[:teams_webhook]
     flavor_name = options[:flavor_name]
-    public_page = "#{zappcenter_base_url}/groups/#{group}"
     retrieve_logo =  Fastlane::Actions::ZappliAction.fetch_logo(group)
 
     begin
