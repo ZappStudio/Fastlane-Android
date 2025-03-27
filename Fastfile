@@ -1,9 +1,4 @@
-require 'semantic'
-
-before_all do
-  # Actualizar los plugins antes de ejecutar cualquier otra cosa
-  sh("fastlane update_plugins")
-end
+fastlane_require 'semantic'
 
 default_platform(:android)
 
