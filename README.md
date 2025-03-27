@@ -13,6 +13,17 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 # Available Actions
 
+### change_version
+
+```sh
+[bundle exec] fastlane change_version
+```
+
+
+
+----
+
+
 ## Android
 
 ### android generic

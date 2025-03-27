@@ -1,5 +1,10 @@
 require 'semantic'
 
+before_all do
+  # Actualizar los plugins antes de ejecutar cualquier otra cosa
+  sh("fastlane update_plugins")
+end
+
 default_platform(:android)
 
 config_json = read_json(
