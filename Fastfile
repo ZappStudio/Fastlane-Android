@@ -1,3 +1,5 @@
+require 'semantic'
+
 default_platform(:android)
 
 config_json = read_json(
@@ -139,7 +141,14 @@ platform :android do
           flavor: flavor_name.capitalize(),
           build_type: sign_conf.capitalize()
         )
+        gradle(
+           task: "#{module_name}:assemble",
+           flavor: flavor_name.capitalize(),
+           build_type: sign_conf.capitalize()
+        )
+
         gradle_path = "#{lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]}"
+        apk_output_path = "#{lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]}"
         distributeApp(options: child, gradle_path: gradle_path)
       end
     end
@@ -155,12 +164,15 @@ platform :android do
         UI.message "Found it specific flavor flavor to build"
         flavor_name = child[:flavor_name]
         sign_conf = child[:sign_conf]
+
+        buildWithJson(child)
         gradle(
           task: "bundle",
           flavor: flavor_name.capitalize(),
           build_type: sign_conf.capitalize()
         )
-        gradle_path = "#{lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]}"
+
+        bundle_path = "#{lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]}"
         uploadGooglePlay(child)
       end
     end
@@ -220,3 +232,67 @@ Esto es extensible infinitamente.
     simple_loco(conf_file_path: conf_file)
   end
 end
+
+
+lane :change_version do |options|
+  bump_type = options[:bump_type] || 'patch'
+  gradle_files = Dir.glob("../**/*.gradle") + Dir.glob("../**/*.gradle.kts")
+  puts "Bump type #{bump_type}"
+
+  version_name = nil
+  version_code = nil
+
+  gradle_files.each do |file|
+    content = File.read(file)
+
+    # Expresión para extraer versionName
+    version_name_match = content.match(/versionName\s*=\s*["']([\d.]+)["']/)
+    version_code_match = content.match(/versionCode\s*=\s*(\d+)/)
+
+    if version_name_match
+      version_name = version_name_match[1]
+    end
+    if version_code_match
+      version_code = version_code_match[1].to_i
+    end
+
+    break if version_name && version_code
+  end
+
+  if version_name && version_code
+    puts "Current Version Name: #{version_name}, Version Code: #{version_code}"
+
+       # Asegurarse de que la versión tenga tres partes (MAJOR.MINOR.PATCH)
+    if version_name.split('.').length == 2
+        version_name += '.0'  # Agregar .0 para completar el formato SemVer
+        puts "Adjusted Version Name (with patch): #{version_name}"
+    end
+    version = Semantic::Version.new(version_name)
+    new_version = case bump_type
+        when 'major'
+          version.increment!(:major)
+        when 'minor'
+          version.increment!(:minor)
+        when 'patch'
+          version.increment!(:patch)
+        else
+          puts "⚠️ Tipo de incremento no válido. Usa 'major', 'minor' o 'patch'."
+          return
+    end
+
+    puts "New Version Name (after bumping #{bump_type}): #{new_version}"
+
+    new_version_code = version_code + 1
+    puts "New Version Code: #{new_version_code}"
+
+    gradle_files.each do |file|
+      content = File.read(file)
+      new_content = content.gsub(/versionName\s*=\s*["'][\d.]+["']/, "versionName = \"#{new_version}\"")
+      new_content = new_content.gsub(/versionCode\s*=\s*\d+/, "versionCode = #{new_version_code}")
+      File.write(file, new_content)
+    end
+  else
+    puts "⚠️ No se encontró versionName o versionCode en el proyecto."
+  end
+end
+
