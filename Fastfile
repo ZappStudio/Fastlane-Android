@@ -55,11 +55,11 @@ platform :android do
 
     if zappli_info.nil? == false
       begin
-        params = zappli_info[:params]
-        groups = params[:groups]
+        app = zappli_info[:app]
+        groups = zappli_info[:groups]
         zappli(
            api_token: zappli_api_token,
-           app: params[:app],
+           app: app,
            path: lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH],
            groups: groups
          )
