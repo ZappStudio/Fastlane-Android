@@ -4,7 +4,7 @@ config_json = read_json(
   json_path: "./buildsystem/config.json"
 )
 
-zappli_api_token = config["zappli_api_key"]
+zappli_api_token = config_json[:zappli_api_key]
 
 platform :android do
   desc "Building generic by json configuration"
