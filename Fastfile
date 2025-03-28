@@ -245,7 +245,6 @@ lane :change_version do |options|
   gradle_files.each do |file|
     content = File.read(file)
 
-    # Expresión para extraer versionName
     version_name_match = content.match(/versionName\s*=\s*["']([\d.]+)["']/)
     version_code_match = content.match(/versionCode\s*=\s*(\d+)/)
 
@@ -291,6 +290,9 @@ lane :change_version do |options|
       new_content = new_content.gsub(/versionCode\s*=\s*\d+/, "versionCode = #{new_version_code}")
       File.write(file, new_content)
     end
+     File.open(ENV['GITHUB_OUTPUT'], 'a') do |file|
+        file.puts("new_version=#{version}")
+     end
   else
     puts "⚠️ No se encontró versionName o versionCode en el proyecto."
   end
