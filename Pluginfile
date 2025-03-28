@@ -2,8 +2,8 @@
 #
 # Ensure this file is checked in to source control!
 
-gem 'fastlane-plugin-appcenter'
 gem 'fastlane-plugin-json'
 gem 'fastlane-plugin-teams_bot'
 gem 'fastlane-plugin-simple_loco'
 gem 'fastlane-plugin-upload_to_server'
+gem "semantic"

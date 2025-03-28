@@ -13,6 +13,17 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 # Available Actions
 
+### change_version
+
+```sh
+[bundle exec] fastlane change_version
+```
+
+
+
+----
+
+
 ## Android
 
 ### android generic
@@ -39,13 +50,13 @@ Build flavor with json config
 
 Distribute app
 
-### android teamsNotification
+### android teams_info
 
 ```sh
-[bundle exec] fastlane android teamsNotification
+[bundle exec] fastlane android teams_info
 ```
 
-Teams message to teams_web_hook
+Inform teams
 
 ### android uploadGooglePlay
 
@@ -59,6 +70,14 @@ Upload aab to google play
 
 ```sh
 [bundle exec] fastlane android buildAab
+```
+
+Generate specific flavor to build, by security can't make all flavors, because some of them are pointing to develop
+
+### android distributeAab
+
+```sh
+[bundle exec] fastlane android distributeAab
 ```
 
 Generate specific flavor to build, by security can't make all flavors, because some of them are pointing to develop
