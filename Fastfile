@@ -291,7 +291,7 @@ lane :change_version do |options|
       File.write(file, new_content)
     end
      File.open(ENV['GITHUB_OUTPUT'], 'a') do |file|
-        file.puts("new_version=#{version}")
+        file.puts("new_version=#{new_version}")
      end
   else
     puts "⚠️ No se encontró versionName o versionCode en el proyecto."
