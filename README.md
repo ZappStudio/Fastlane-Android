@@ -21,6 +21,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 
 
+### update_ci
+
+```sh
+[bundle exec] fastlane update_ci
+```
+
+
+
 ----
 
 
