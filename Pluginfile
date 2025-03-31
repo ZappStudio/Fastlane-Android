@@ -7,3 +7,5 @@ gem 'fastlane-plugin-teams_bot'
 gem 'fastlane-plugin-simple_loco'
 gem 'fastlane-plugin-upload_to_server'
 gem "semantic"
+gem "safe_yaml"
+

@@ -1,4 +1,5 @@
 fastlane_require 'semantic'
+fastlane_require 'safe_yaml'
 
 default_platform(:android)
 
@@ -294,5 +295,56 @@ lane :change_version do |options|
   else
     puts "⚠️ No se encontró versionName o versionCode en el proyecto."
   end
+end
+
+lane :update_ci do |options|
+    flavors = config_json[:flavors]
+    ids = flavors.map do |item|
+        item[:id]
+    end
+    ids_production = flavors.select do |obj|
+        obj[:id].include?("production") || obj["production"] == true
+    end
+    ids_production = ids_production.map do |item|
+        item[:id]
+    end
+
+    all_flavors_apk_directory = "../.github/workflows/all-flavors-apk.yml"
+    all_flavors_apk = SafeYAML.load_file(all_flavors_apk_directory)
+    all_flavors_apk["jobs"]["build"]["strategy"]["matrix"]["flavor"] = ids
+    File.open(all_flavors_apk_directory, 'w') do |file|
+        file.write(all_flavors_apk.to_yaml)
+    end
+
+    all_flavors_googleplay_directory = "../.github/workflows/all-flavors-googleplay.yml"
+    all_flavors_googleplay = SafeYAML.load_file(all_flavors_googleplay_directory)
+    all_flavors_googleplay["jobs"]["build"]["strategy"]["matrix"]["flavor"] = ids_production
+    File.open(all_flavors_googleplay_directory, 'w') do |file|
+        file.write(all_flavors_googleplay.to_yaml)
+    end
+
+
+    flavor_aab_google_play_directory = "../.github/workflows/flavor-aab-googleplay.yml"
+    flavor_aab_google_play = SafeYAML.load_file(flavor_aab_google_play_directory)
+    flavor_aab_google_play["on"]["workflow_dispatch"]["inputs"]["flavorId"]["options"] = ids_production
+    File.open(flavor_aab_google_play_directory, 'w') do |file|
+        file.write(flavor_aab_google_play.to_yaml)
+    end
+
+
+    flavor_apk_directory = "../.github/workflows/flavor-apk.yml"
+    flavor_apk = SafeYAML.load_file(flavor_apk_directory)
+    flavor_apk["on"]["workflow_dispatch"]["inputs"]["flavorId"]["options"] = ids
+    File.open(flavor_apk_directory, 'w') do |file|
+        file.write(flavor_apk.to_yaml)
+    end
+
+    update_strings_build_version_directory = "../.github/workflows/update-strings-build-version.yml"
+    update_strings_build_version = SafeYAML.load_file(update_strings_build_version_directory)
+    update_strings_build_version["on"]["workflow_dispatch"]["inputs"]["flavorId"]["options"] = ids
+    File.open(update_strings_build_version_directory, 'w') do |file|
+        file.write(update_strings_build_version.to_yaml)
+    end
+
 end
 
