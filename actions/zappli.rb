@@ -2,7 +2,7 @@ module Fastlane
   module Actions
     module SharedValues
       ZAPPLI_CUSTOM_VALUE = :ZAPPLI_CUSTOM_VALUE
-      ZAPPLI_BASEPATH = "https://zappcenter-api-dev.zapp.dev"
+      ZAPPLI_BASEPATH = "https://api.zappli.app"
       ZAPPLI_ENDPOINT_INTEGRATION = "#{ZAPPLI_BASEPATH}/integration/releases"
       ZAPPLI_LOGO_URL = "#{ZAPPLI_BASEPATH}/api/public/{id}"
       DEFAULT_LOGO = "https://media.licdn.com/dms/image/v2/D4D0BAQEUKgr53vN9sg/company-logo_200_200/company-logo_200_200/0/1719812855696/zapp_studio_logo?e=2147483647&v=beta&t=zazdJQYym7vp7-HaU0tqTccHUy-G8GM3RsfYdlWAF9g"
