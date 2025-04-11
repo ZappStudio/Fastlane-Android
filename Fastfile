@@ -242,6 +242,7 @@ lane :change_version do |options|
   version_code = nil
 
   gradle_files.each do |file|
+      puts "Processing file: #{file}"
     content = File.read(file)
 
     version_name_match = content.match(/versionName\s*=\s*["']([\d.]+)["']/)
@@ -298,6 +299,7 @@ lane :change_version do |options|
 end
 
 lane :update_ci do |options|
+    directory = options[:directory] || "../"
     flavors = config_json[:flavors]
     ids = flavors.map do |item|
         item[:id]
@@ -309,14 +311,14 @@ lane :update_ci do |options|
         item[:id]
     end
 
-    all_flavors_apk_directory = "../.github/workflows/all-flavors-apk.yml"
+    all_flavors_apk_directory = "#{directory}.github/workflows/all-flavors-apk.yml"
     all_flavors_apk = SafeYAML.load_file(all_flavors_apk_directory)
     all_flavors_apk["jobs"]["build"]["strategy"]["matrix"]["flavor"] = ids
     File.open(all_flavors_apk_directory, 'w') do |file|
         file.write(all_flavors_apk.to_yaml)
     end
 
-    all_flavors_googleplay_directory = "../.github/workflows/all-flavors-googleplay.yml"
+    all_flavors_googleplay_directory = "#{directory}.github/workflows/all-flavors-googleplay.yml"
     all_flavors_googleplay = SafeYAML.load_file(all_flavors_googleplay_directory)
     all_flavors_googleplay["jobs"]["build"]["strategy"]["matrix"]["flavor"] = ids_production
     File.open(all_flavors_googleplay_directory, 'w') do |file|
@@ -324,7 +326,7 @@ lane :update_ci do |options|
     end
 
 
-    flavor_aab_google_play_directory = "../.github/workflows/flavor-aab-googleplay.yml"
+    flavor_aab_google_play_directory = "#{directory}.github/workflows/flavor-aab-googleplay.yml"
     flavor_aab_google_play = SafeYAML.load_file(flavor_aab_google_play_directory)
     flavor_aab_google_play["on"]["workflow_dispatch"]["inputs"]["flavorId"]["options"] = ids_production
     File.open(flavor_aab_google_play_directory, 'w') do |file|
@@ -332,14 +334,14 @@ lane :update_ci do |options|
     end
 
 
-    flavor_apk_directory = "../.github/workflows/flavor-apk.yml"
+    flavor_apk_directory = "#{directory}.github/workflows/flavor-apk.yml"
     flavor_apk = SafeYAML.load_file(flavor_apk_directory)
     flavor_apk["on"]["workflow_dispatch"]["inputs"]["flavorId"]["options"] = ids
     File.open(flavor_apk_directory, 'w') do |file|
         file.write(flavor_apk.to_yaml)
     end
 
-    update_strings_build_version_directory = "../.github/workflows/update-strings-build-version.yml"
+    update_strings_build_version_directory = "#{directory}.github/workflows/update-strings-build-version.yml"
     update_strings_build_version = SafeYAML.load_file(update_strings_build_version_directory)
     update_strings_build_version["on"]["workflow_dispatch"]["inputs"]["flavorId"]["options"] = ids
     File.open(update_strings_build_version_directory, 'w') do |file|
