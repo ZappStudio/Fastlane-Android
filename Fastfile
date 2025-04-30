@@ -1,5 +1,6 @@
 fastlane_require 'semantic'
 fastlane_require 'safe_yaml'
+fastlane_require 'mini_magick'
 
 default_platform(:android)
 
@@ -350,3 +351,72 @@ lane :update_ci do |options|
 
 end
 
+lane :resize_resources do
+  require 'mini_magick'
+
+  densities = {
+    'ldpi' => 0.75,
+    'mdpi' => 1.0,
+    'hdpi' => 1.5,
+    'xhdpi' => 2.0,
+    'xxhdpi' => 3.0,
+    'xxxhdpi' => 4.0
+  }
+
+  # 🔥 INTERACTIVO 🔥
+  module_name = prompt(text: "¿Nombre del módulo? (ej: app, login, feature-home)")
+  module_name = module_name.gsub(':', '/').strip
+
+  flavor_name = prompt(text: "¿Nombre del flavor? (Enter para 'main')")
+  flavor_name = flavor_name.empty? ? 'main' : flavor_name.strip
+
+  density_source = prompt(text: "¿Densidad de origen? (hdpi, xhdpi, xxhdpi, etc)")
+  unless densities.key?(density_source)
+    UI.user_error!("Densidad de origen '#{density_source}' no es válida. Opciones válidas: #{densities.keys.join(', ')}")
+  end
+
+  # Construir rutas inteligentemente
+  project_root = File.expand_path("..", __dir__)  # Subir 1 nivel desde fastlane/
+  base_path = File.join(project_root, module_name, "src", flavor_name, "res")
+  input_folder = File.join(base_path, "drawable-#{density_source}")
+
+
+  UI.message("Carpeta detectada: #{input_folder}")
+
+  unless Dir.exist?(input_folder)
+    UI.user_error!("No existe la carpeta: #{input_folder}")
+  end
+
+  UI.important("¿Continuar generando recursos para todos los targets desde #{input_folder}?")
+  confirm = prompt(text: "Escribe 'yes' para confirmar")
+  UI.user_error!("Abortado.") unless confirm.downcase == "yes"
+
+  # Ratio origen
+  source_ratio = densities[density_source]
+
+  # Procesar imágenes
+  Dir.glob("#{input_folder}/*.{png,jpg,jpeg,webp}").each do |filepath|
+    filename = File.basename(filepath)
+
+    densities.each do |target_density, target_ratio|
+      next if target_density == density_source  # No regenerar la original
+
+      scale_factor = target_ratio / source_ratio
+      output_dir = File.join(base_path, "drawable-#{target_density}")
+      FileUtils.mkdir_p(output_dir)
+
+      output_path = File.join(output_dir, filename)
+
+      image = MiniMagick::Image.open(filepath)
+      new_width = (image.width * scale_factor).round
+      new_height = (image.height * scale_factor).round
+      image.resize "#{new_width}x#{new_height}"
+
+      image.write(output_path)
+
+      UI.message("Guardado: #{output_path}")
+    end
+  end
+
+  UI.success("¡Todos los recursos fueron generados correctamente!")
+end

@@ -29,6 +29,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 
 
+### resize_resources
+
+```sh
+[bundle exec] fastlane resize_resources
+```
+
+
+
 ----
 
 
