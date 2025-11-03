@@ -78,18 +78,18 @@ module Fastlane
         api_key = params[:api_key]
         # Create a multipart payload with the file
         payload = {
-          file: File.new(params[:path], 'rb')
+          fileFormFieldName: "file",
+          app: params[:app],
+          groups: params[:groups].join(',')
         }
 
-        
-        # Add app name and groups to the payload
-        payload[:app] = params[:app]
-        payload[:groups] = params[:groups].join(',')
         # Upload the payload to the server
         other_action.upload_to_server(
             endPoint: endpoint,
             method: :post,
             multipartPayload: payload,
+            file: params[:path],
+            apk: "",
             headers: {
               "api-key" => "#{api_key}",
               "Content-Type" => "multipart/form-data"

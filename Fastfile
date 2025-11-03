@@ -162,16 +162,25 @@ platform :android do
         flavor_name = child[:flavor_name]
         sign_conf = child[:sign_conf]
         json_key_file = child[:json_key_file]
-        if json_key_file == nil
-            raise "Error: No se ha encontrado la configuracion de google play"
-        end
-        buildWithJson(child)
+        zappli_info = child[:zappli]
+        app = zappli_info[:app]
+        groups = zappli_info[:groups]
+
         gradle(
           task: "bundle",
           flavor: flavor_name.capitalize(),
           build_type: sign_conf.capitalize()
         )
+        zappli(
+            api_token: zappli_api_token,
+            app: app,
+            path: lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH],
+            groups: groups
+        )
 
+        if json_key_file == nil
+            raise "Error: No se ha encontrado la configuracion de google play"
+        end
         bundle_path = "#{lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]}"
         uploadGooglePlay(child)
       end
