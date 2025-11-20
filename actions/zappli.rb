@@ -103,9 +103,6 @@ module Fastlane
         rescue RestClient::ExceptionWithResponse => e
           UI.error("Error al subir a Zappli: #{e.http_code} #{e.message}")
 
-          # Backtrace
-          UI.error("Backtrace:\n#{e.backtrace.join("\n")}") if e.backtrace
-
           # Body del servidor (probablemente JSON)
           if e.response
             begin
@@ -118,10 +115,12 @@ module Fastlane
           end
 
           UI.error("Excepción completa: #{e.inspect}")
+          raise e
 
         rescue => e
           UI.error("Error desconocido: #{e.message}")
           UI.error("Excepción completa: #{e.inspect}")
+          raise e
         end
       end
 
