@@ -83,6 +83,7 @@ module Fastlane
           groups: params[:groups].join(',')
         }
 
+        UI.message("Preparado para hacer petición")
         # Upload the payload to the server
         response = other_action.upload_to_server(
             endPoint: endpoint,
