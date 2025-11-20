@@ -84,7 +84,7 @@ module Fastlane
         }
 
         # Upload the payload to the server
-        other_action.upload_to_server(
+        response = other_action.upload_to_server(
             endPoint: endpoint,
             method: :post,
             multipartPayload: payload,
@@ -95,6 +95,7 @@ module Fastlane
               "Content-Type" => "multipart/form-data"
             }
           )
+        UI.message("Respuesta de Zappli:\n#{JSON.pretty_generate(response)}")
         
       end
 
