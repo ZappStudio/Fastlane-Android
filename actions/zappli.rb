@@ -83,20 +83,51 @@ module Fastlane
           groups: params[:groups].join(',')
         }
 
-        UI.message("Preparado para hacer petición")
-        # Upload the payload to the server
-        response = other_action.upload_to_server(
-            endPoint: endpoint,
-            method: :post,
-            multipartPayload: payload,
-            file: params[:path],
-            apk: "",
-            headers: {
-              "api-key" => "#{api_key}",
-              "Content-Type" => "multipart/form-data"
-            }
-          )
-        UI.message("Respuesta de Zappli:\n#{JSON.pretty_generate(response)}")
+        begin
+            UI.message("Preparado para hacer petición")
+            # Upload the payload to the server
+            response = other_action.upload_to_server(
+                endPoint: endpoint,
+                method: :post,
+                multipartPayload: payload,
+                file: params[:path],
+                apk: "",
+                headers: {
+                  "api-key" => "#{api_key}",
+                  "Content-Type" => "multipart/form-data"
+                }
+              )
+            UI.message("Respuesta de Zappli:\n#{JSON.pretty_generate(response)}")
+        rescue => e
+            UI.error("Error al subir a Zappli: #{e.message}")
+
+            # Mostrar stacktrace completo
+            UI.error("Backtrace:\n#{e.backtrace.join("\n")}") if e.backtrace
+
+            # 1. Si la excepción contiene error_info (cuando Fastlane lo propaga), lo mostramos bonito
+            if e.respond_to?(:error_info) && e.error_info
+                begin
+                  UI.error("Respuesta del servidor (error_info):\n#{JSON.pretty_generate(e.error_info)}")
+                rescue
+                  UI.error("Respuesta del servidor (error_info RAW): #{e.error_info.inspect}")
+                end
+            end
+
+            # 2. Intentar obtener el body de la respuesta si viene incrustado en e.message
+            if e.message =~ /\{.*\}/
+                begin
+                  parsed = JSON.parse(e.message[e.message.index('{')..-1]) rescue nil
+                  if parsed
+                    UI.error("Respuesta del servidor encontrada en el mensaje:\n#{JSON.pretty_generate(parsed)}")
+                  end
+                rescue
+                  # ignorar si no es JSON válido
+                end
+            end
+
+            # 3. Inspección completa de la excepción (último recurso)
+            UI.error("Excepción completa: #{e.inspect}")
+        end
         
       end
 
