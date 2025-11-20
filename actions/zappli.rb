@@ -76,7 +76,7 @@ module Fastlane
       def self.update_release(params)
         endpoint = params[:endpoint]
         api_key = params[:api_key]
-        # Create a multipart payload with the file
+
         payload = {
           fileFormFieldName: "file",
           app: params[:app],
@@ -84,51 +84,45 @@ module Fastlane
         }
 
         begin
-            UI.message("Preparado para hacer petición")
-            # Upload the payload to the server
-            response = other_action.upload_to_server(
-                endPoint: endpoint,
-                method: :post,
-                multipartPayload: payload,
-                file: params[:path],
-                apk: "",
-                headers: {
-                  "api-key" => "#{api_key}",
-                  "Content-Type" => "multipart/form-data"
-                }
-              )
-            UI.message("Respuesta de Zappli:\n#{JSON.pretty_generate(response)}")
+          UI.message("Preparado para hacer petición")
+
+          response = other_action.upload_to_server(
+            endPoint: endpoint,
+            method: :post,
+            multipartPayload: payload,
+            file: params[:path],
+            apk: "",
+            headers: {
+              "api-key" => "#{api_key}",
+              "Content-Type" => "multipart/form-data"
+            }
+          )
+
+          UI.message("Respuesta de Zappli:\n#{JSON.pretty_generate(response)}")
+
+        rescue RestClient::ExceptionWithResponse => e
+          UI.error("Error al subir a Zappli: #{e.http_code} #{e.message}")
+
+          # Backtrace
+          UI.error("Backtrace:\n#{e.backtrace.join("\n")}") if e.backtrace
+
+          # Body del servidor (probablemente JSON)
+          if e.response
+            begin
+              parsed = JSON.parse(e.response)
+              UI.error("Respuesta del servidor (JSON):\n#{JSON.pretty_generate(parsed)}")
+            rescue
+              # Si no es JSON, mostrarlo tal cual
+              UI.error("Respuesta del servidor (RAW):\n#{e.response}")
+            end
+          end
+
+          UI.error("Excepción completa: #{e.inspect}")
+
         rescue => e
-            UI.error("Error al subir a Zappli: #{e.message}")
-
-            # Mostrar stacktrace completo
-            UI.error("Backtrace:\n#{e.backtrace.join("\n")}") if e.backtrace
-
-            # 1. Si la excepción contiene error_info (cuando Fastlane lo propaga), lo mostramos bonito
-            if e.respond_to?(:error_info) && e.error_info
-                begin
-                  UI.error("Respuesta del servidor (error_info):\n#{JSON.pretty_generate(e.error_info)}")
-                rescue
-                  UI.error("Respuesta del servidor (error_info RAW): #{e.error_info.inspect}")
-                end
-            end
-
-            # 2. Intentar obtener el body de la respuesta si viene incrustado en e.message
-            if e.message =~ /\{.*\}/
-                begin
-                  parsed = JSON.parse(e.message[e.message.index('{')..-1]) rescue nil
-                  if parsed
-                    UI.error("Respuesta del servidor encontrada en el mensaje:\n#{JSON.pretty_generate(parsed)}")
-                  end
-                rescue
-                  # ignorar si no es JSON válido
-                end
-            end
-
-            # 3. Inspección completa de la excepción (último recurso)
-            UI.error("Excepción completa: #{e.inspect}")
+          UI.error("Error desconocido: #{e.message}")
+          UI.error("Excepción completa: #{e.inspect}")
         end
-        
       end
 
       def self.details
